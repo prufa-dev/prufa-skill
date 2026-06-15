@@ -1,0 +1,39 @@
+{
+  "name": "prufa",
+  "version": "0.1.0",
+  "description": "The QA agent for your vibe-coded app.",
+  "license": "Apache-2.0",
+  "author": "Prufa (prufa.dev)",
+  "homepage": "https://prufa.dev",
+  "repository": "https://github.com/prufa-dev/prufa-skill",
+  "entrypoints": {
+    "skill": "SKILL.md",
+    "mcp": "https://github.com/prufa-dev/prufa-mcp"
+  },
+  "tools": [
+    {
+      "name": "prufa_run_audit",
+      "description": "Run a public-page QA audit on a URL.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "url": { "type": "string" },
+          "wait": { "type": "boolean", "default": true }
+        },
+        "required": ["url"]
+      }
+    },
+    {
+      "name": "prufa_get_report",
+      "description": "Fetch a shareable report for a completed audit.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "report_id": { "type": "string" }
+        },
+        "required": ["report_id"]
+      }
+    }
+  ],
+  "tags": ["qa", "testing", "browser-automation", "vibe-coding", "agent-tools"]
+}

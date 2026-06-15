@@ -1,0 +1,5 @@
+# Skill repo is docs only, but keep the standard ignores
+.DS_Store
+*.swp
+.idea/
+.vscode/
