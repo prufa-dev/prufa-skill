@@ -89,12 +89,13 @@ flow lifecycle (see "Verify a whole flow" below):
 
 **Hosted (require a Prufa workspace + API key, mostly Pro-tier):**
 
-The full surface is documented in the [hosted API reference](https://prufa.dev/docs/api).
+The full surface is documented in the [hosted API reference](https://app.prufa.dev/docs/api).
 Highlights: `prufa_setup_workspace`, `prufa_create_flow`, `prufa_confirm_flow`,
 `prufa_run_flow`, `prufa_set_flow_credentials`, `prufa_start_monitor`,
 `prufa_pause_monitor`, `prufa_resume_monitor`, `prufa_trigger_monitor`,
-`prufa_workspace_settings`, `prufa_list_alerts`, `prufa_get_usage`, and
-the rest. See the API docs for the full list of ~13 hosted tools.
+`prufa_workspace_settings`, `prufa_list_alerts`, `prufa_get_usage`,
+`prufa_run_gremlin`, and the rest. See the API docs for the full list — the
+MCP server exposes 24 tools in total, 2 of them OSS (so ~22 hosted).
 
 If you call a hosted tool without a paid plan, the API answers 402
 and the tool result carries the structured error — `code` (e.g.
