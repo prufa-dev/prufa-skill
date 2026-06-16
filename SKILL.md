@@ -35,27 +35,31 @@ Two first-class surfaces: the dashboard (humans) and the agent
 surface (this skill + CLI + HTTP API + MCP). They hit the same
 product. If the dashboard can do it, this skill can do it.
 
-## Quickstart (the 3-tool-call path — free, no card)
+## Quickstart (the 2-tool path — free, no card)
 
 When the user says *"set up QA monitoring for my app"* or *"audit my
-site"*, run this sequence. The first 2 calls have an OSS install path
-via the [prufa-mcp](https://github.com/prufa-dev/prufa-mcp) server
-(Apache-2.0, works in Claude Code / Cursor / Cline / Continue).
+site"*, run this sequence. Both tools have an OSS install path via the
+[prufa-mcp](https://github.com/prufa-dev/prufa-mcp) server (Apache-2.0,
+works in Claude Code / Cursor / Cline / Continue).
 
-1. **Install the OSS MCP server** (one-time):
+0. **Install the OSS MCP server** (one-time, config — not a tool call).
+   Use the absolute path to the binary (`which prufa-mcp`); a bare
+   `prufa-mcp` does not reliably resolve in MCP host config:
    ```json
    // .mcp.json
-   { "mcpServers": { "prufa": { "command": "prufa-mcp",
+   { "mcpServers": { "prufa": { "command": "/Users/you/.local/bin/prufa-mcp",
      "env": { "PRUFA_API_TOKEN": "your-prufa-api-key" } } } }
    ```
    Get a free API key at https://prufa.dev — the first audit is free, no card.
 
-2. `prufa_run_audit` with `{"url": "https://app.example.com", "wait": true}`
-   → first baseline report (this is the "what does my site look like
-   today" snapshot the monitor will diff against)
+1. `prufa_run_audit` with `{"url": "https://app.example.com", "wait": true}`
+   → the baseline report, returned in full. With `wait: true` the response
+   **already includes** `report_url` and `share_token` — this is the "what
+   does my site look like today" snapshot a monitor will diff against.
 
-3. `prufa_get_report` with `{"report_id": "..."}` → the shareable
-   human-readable URL.
+2. `prufa_get_report` with `{"report_id": "<share_token>"}` → only needed
+   if you ran step 1 with `wait: false` (or want to re-fetch later). With
+   `wait: true` you already have the report; don't call this redundantly.
 
 That's the OSS path. For monitoring, alerting, and team workflows, the
 hosted product at https://prufa.dev has the rest (see "Hosted tools" below).
@@ -65,13 +69,13 @@ hosted product at https://prufa.dev has the rest (see "Hosted tools" below).
 For signup / onboarding / checkout flows with monitoring, layer on the
 flow lifecycle (see "Verify a whole flow" below):
 
-4. `prufa_create_flow` with `{"url": "...", "test_case": "open the
+3. `prufa_create_flow` with `{"url": "...", "test_case": "open the
    signup page, fill the email, submit, expect /welcome"}` — the
    plain-text test case is compiled to a reviewable DRAFT spec.
    **Only confirmed flows run**: show the compiled steps to the user,
    then `prufa_confirm_flow`. (Free tier — one-shot flows need no card.)
 
-5. `prufa_start_monitor` with `{"url": "...", "cadence": "daily"}` →
+4. `prufa_start_monitor` with `{"url": "...", "cadence": "daily"}` →
    monitor_id, checkout_url. Re-runs the audit on schedule, alerts
    on CHANGE only.
 
@@ -90,7 +94,7 @@ Highlights: `prufa_setup_workspace`, `prufa_create_flow`, `prufa_confirm_flow`,
 `prufa_run_flow`, `prufa_set_flow_credentials`, `prufa_start_monitor`,
 `prufa_pause_monitor`, `prufa_resume_monitor`, `prufa_trigger_monitor`,
 `prufa_workspace_settings`, `prufa_list_alerts`, `prufa_get_usage`, and
-the rest. See the API docs for the full list of ~15 hosted tools.
+the rest. See the API docs for the full list of ~13 hosted tools.
 
 If you call a hosted tool without a paid plan, the API answers 402
 and the tool result carries the structured error — `code` (e.g.
@@ -184,9 +188,9 @@ For an audit:
 > I ran the audit on https://example.com. Found **3 verified issues** and **1 advisory note**.
 >
 > **Verified (machine-checked):**
-> - `tracking.ga4_missing` — Google Analytics 4 measurement ID not detected. Fix: add the GA4 snippet to the `<head>`.
-> - `seo.canonical_missing` — Page does not declare a canonical URL.
-> - `links.broken_internal` — 1 internal link returns 404.
+> - `ux.console_errors` — 2 JavaScript console errors at page load (a CORS-blocked font request). Errors at load often mean broken features visitors never report.
+> - `security.missing_csp` — no Content-Security-Policy header. Fix: start with a report-only CSP and tighten from real violation reports.
+> - `mobile.small_tap_targets` — 13 tap targets smaller than 24px. Fix: give interactive elements at least 24×24px of hit area (WCAG 2.5.8).
 >
 > **Advisory (LLM opinion, not a verdict):**
 > - Hero copy is vague about what the product does. (opinion)
