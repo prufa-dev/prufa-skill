@@ -41,8 +41,8 @@ Claude Code `claude mcp add` path and other hosts.
 | `prufa_run_audit` | One call → runs a public-page audit, returns findings JSON |
 | `prufa_get_report` | Fetches a shareable report for a completed audit |
 
-The other ~13 tools (workspace setup, flows, monitors, alerts, billing)
-live in the hosted product at https://prufa.dev.
+The other ~22 tools (workspace setup, flows, monitors, gremlin runs, alerts,
+billing) live in the hosted product at https://prufa.dev.
 
 ## Why open source
 
