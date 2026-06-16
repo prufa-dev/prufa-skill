@@ -1,21 +1,29 @@
 # prufa-skill
 
-The Prufa agent skill — 3-tool-call QA quickstart for AI agents. Apache-2.0.
+The Prufa agent skill — a 2-tool QA quickstart for AI agents. Apache-2.0.
 
-This is the **documentation install surface** for the [prufa-mcp](https://github.com/prufa-dev/prufa-mcp)
-server. Point your agent framework at this skill and it learns how to call
-Prufa for vibe-coded-app QA.
+**Which repo do you want?**
 
-## Install
+- **On Claude Code / Cursor / Cline / Continue?** You don't need this repo —
+  just install the MCP server, [prufa-mcp](https://github.com/prufa-dev/prufa-mcp).
+  It ships the runtime and the full install guide.
+- **On an agent framework that reads a `SKILL.md` (OpenClaw, Hermes, and
+  similar)?** This is the repo. Point the framework at [`SKILL.md`](SKILL.md) —
+  it teaches the agent *when* to call Prufa, the 2 free MCP tools, the error
+  contract, and which hosted tools cover the rest.
 
-For Claude Code / Cursor / Cline / Continue: install the MCP server (the
-actual runtime) via `.mcp.json`:
+## Install the runtime
+
+The skill is documentation; the tools run in the [prufa-mcp](https://github.com/prufa-dev/prufa-mcp)
+server. Register it in `.mcp.json` using the **absolute** path to the binary
+(`which prufa-mcp` after `pipx install prufa-mcp` — a bare `prufa-mcp` or `~`
+does not reliably resolve in MCP host config):
 
 ```json
 {
   "mcpServers": {
     "prufa": {
-      "command": "prufa-mcp",
+      "command": "/Users/you/.local/bin/prufa-mcp",
       "env": { "PRUFA_API_TOKEN": "your-prufa-api-key" }
     }
   }
@@ -23,11 +31,8 @@ actual runtime) via `.mcp.json`:
 ```
 
 Get a free API key at https://prufa.dev — the first audit is free, no card required.
-
-For agent frameworks that read a `SKILL.md` (OpenClaw, Hermes, and similar):
-point them at https://github.com/prufa-dev/prufa-skill — the full `SKILL.md`
-teaches the agent when to call the 2 free MCP tools, and which hosted tools
-exist for the rest of the surface.
+See the [prufa-mcp README](https://github.com/prufa-dev/prufa-mcp) for the
+Claude Code `claude mcp add` path and other hosts.
 
 ## The 2 free tools (the OSS surface)
 

@@ -1,6 +1,6 @@
 # Contributing to prufa-skill
 
-Thanks for being here. The skill is intentionally small — a 3-tool-call
+Thanks for being here. The skill is intentionally small — a 2-tool
 quickstart for AI agents that want to call the [prufa-mcp](https://github.com/prufa-dev/prufa-mcp)
 server. The skill is the install surface; the heavy lifting lives in the
 MCP server and the hosted product.
